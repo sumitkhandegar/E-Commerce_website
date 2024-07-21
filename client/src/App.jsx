@@ -18,21 +18,25 @@ import AddProduct from './pages/Admin/AddProduct';
 import Users from './pages/Admin/Users';
 import Profile from './pages/user/Profile';
 import Orders from './pages/user/Orders';
+import Product from './pages/Admin/Product';
 
 function App() {
     return (
         <div>
             <Routes>
                 <Route path='/' element={<Home />} />
+                {/* user */}
                 <Route path='/dashboard' element={<PrivateRoute />}>
                     <Route path="user" element={<Dashboard />} />
                     <Route path="user/profile" element={<Profile />} />
                     <Route path="user/orders" element={<Orders />} />
                 </Route>
+                {/* admin */}
                 <Route path='/dashboard' element={<AdminRoute />}>
                     <Route path="admin" element={<AdminDashboard />} />
                     <Route path="admin/add-category" element={<AddCategory />} />
                     <Route path="admin/add-product" element={<AddProduct />} />
+                    <Route path="admin/products" element={<Product />} />
                     <Route path="admin/users" element={<Users />} />
                 </Route>
                 <Route path='/login' element={<Login />} />

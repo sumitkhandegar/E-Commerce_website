@@ -17,13 +17,19 @@ const AdminMenu = () => {
         <li>
           <Link to="/dashboard/admin/add-category"
             className={`block px-4 py-2 text-sm text-gray-700 ${location.pathname === '/dashboard/admin/add-category' ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-100 hover:text-gray-900'}`}>
-            Category
+            Add Category
           </Link>
         </li>
         <li>
           <Link to="/dashboard/admin/add-product"
             className={`block px-4 py-2 text-sm text-gray-700 ${location.pathname === '/dashboard/admin/add-product' ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-100 hover:text-gray-900'}`}>
-            Product
+            Add Product
+          </Link>
+        </li>
+        <li>
+          <Link to="/dashboard/admin/products"
+            className={`block px-4 py-2 text-sm text-gray-700 ${location.pathname === '/dashboard/admin/products' ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-100 hover:text-gray-900'}`}>
+            All Products
           </Link>
         </li>
         <li>

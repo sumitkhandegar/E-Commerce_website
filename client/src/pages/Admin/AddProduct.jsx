@@ -84,7 +84,7 @@ const AddProduct = () => {
   
       if (response.data.success) {
         toast.success('Product added successfully!');
-        navigate('/dashborad/admin/products');
+        navigate('/dashboard/admin/products');
 
         setName('');
         setDescription('');
