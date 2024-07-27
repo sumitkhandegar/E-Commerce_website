@@ -167,3 +167,35 @@ export const deleteProductController = async (req, res) => {
     }
 };
 
+// SearchProductController
+export const SearchProductController = async (req, res) => {
+    try {
+      const { keyword } = req.params;
+      const result = await productModel.find({
+        $or: [
+          { name: { $regex: keyword, $options: 'i' } },
+          { description: { $regex: keyword, $options: 'i' } },
+        ],
+      });
+  
+      if (result.length === 0) {
+        return res.status(404).send({
+          success: false,
+          message: 'No products found',
+        });
+      }
+  
+      res.status(200).send({
+        success: true,
+        data: result,
+      });
+    } catch (error) {
+      console.log('SearchProductController error:', error);
+      res.status(500).send({
+        success: false,
+        message: 'Server error',
+        error,
+      });
+    }
+  };
+  

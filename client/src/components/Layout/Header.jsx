@@ -4,6 +4,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAuth } from '../../context/auth';
+import SearchForm from '../Form/SearchForm';
 
 function Header() {
   const location = useLocation(); 
@@ -50,11 +51,12 @@ function Header() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 <Link to="/" className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === '/' ? 'text-white underline' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`} aria-current={location.pathname === '/' ? 'page' : undefined}>Home</Link>
-                <Link to="/category" className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === '/category' ? 'text-white underline' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Category</Link>
+                <Link to="/about" className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === '/about' ? 'text-white underline' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>About</Link>
               </div>
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <SearchForm />
             <button
               type="button"
               className="relative flex items-center justify-center h-10 w-10 rounded-full bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"

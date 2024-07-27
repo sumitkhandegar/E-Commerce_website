@@ -5,7 +5,8 @@ import { addProductController,
     getProductController, 
     getSingleProductController, 
     deleteProductController,
-    productPhotoController } from '../controllers/productController.js';
+    productPhotoController,
+    SearchProductController } from '../controllers/productController.js';
 import formidable from 'express-formidable'
 
 // roter object
@@ -26,7 +27,10 @@ router.get('/product-photo/:pid', productPhotoController);
 // update product
 router.put('/update-product/:pid', requireSignIn, isAdmin, formidable(), updateProductController);
 
-// delete category
+// delete product
 router.delete('/delete-product/:id', requireSignIn, isAdmin, deleteProductController);
+
+// search product
+router.get('/search/:keyword', SearchProductController);
 
 export default router;
