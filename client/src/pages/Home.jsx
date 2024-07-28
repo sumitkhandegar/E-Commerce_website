@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout/Layout';
 import axios from 'axios'; 
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import { Grid, Card, CardContent, CardMedia, Typography, Button, Box, IconButton, Drawer } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Prices } from '../components/Prices';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const Home = () => {
+  const [cart, setCart] = useCart();
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedPrice, setSelectedPrice] = useState([]);
@@ -14,6 +17,7 @@ const Home = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const authURL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate();
 
   // Fetch categories 
   const getAllCategories = async () => {
@@ -93,6 +97,7 @@ const Home = () => {
 
   return (
     <Layout title="All Products - Best offers">
+      <ToastContainer />
       <div className="flex flex-wrap justify-between items-center p-4">
         <IconButton onClick={toggleSidebar} className="md:hidden">
           <MenuIcon />
@@ -209,10 +214,23 @@ const Home = () => {
                     </Typography>
                   </CardContent>
                   <Box className="p-2 flex justify-between">
-                    <Button variant="contained" color="primary" >
+                    <Button 
+                      variant="contained" 
+                      color="primary" 
+                      onClick={() => navigate(`/product/${product.slug}`)}
+                    >
                       Detail
                     </Button>
-                    <Button variant="contained" color="secondary" >
+                    <Button 
+                      variant="contained" 
+                      color="secondary" 
+                      onClick={() => {
+                        const updatedCart = [...cart, product];
+                        setCart(updatedCart);
+                        localStorage.setItem('cart', JSON.stringify(updatedCart));
+                        toast.success("Item added to cart");
+                      }}
+                    >
                       Add to Cart
                     </Button>
                   </Box>

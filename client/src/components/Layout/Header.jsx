@@ -5,12 +5,16 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import PersonIcon from '@mui/icons-material/Person';
 import { useAuth } from '../../context/auth';
 import SearchForm from '../Form/SearchForm';
+import { useNavigate } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 
 function Header() {
   const location = useLocation(); 
+  const [cart] = useCart();
   const [auth, setAuth] = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleSignOut = () => {
     setAuth({
@@ -59,9 +63,10 @@ function Header() {
             <SearchForm />
             <button
               type="button"
+              onClick={() => navigate(`/cart`)}
               className="relative flex items-center justify-center h-10 w-10 rounded-full bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
             >
-              <span className="sr-only">Open cart</span>
+              <span className="sr-only">{cart?.length}</span>
               <ShoppingCartIcon className="h-6 w-6" />
             </button>
             <button
@@ -115,7 +120,7 @@ function Header() {
       <div className={`${menuOpen ? 'block' : 'hidden'} sm:hidden`} id="mobile-menu">
         <div className="space-y-1 px-2 pb-3 pt-2">
           <Link to="/" className={`block rounded-md bg-gray-900 px-3 py-2 text-base font-medium ${location.pathname === '/' ? 'text-white underline' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`} aria-current={location.pathname === '/' ? 'page' : undefined}>Home</Link>
-          <Link to="/category" className={`block rounded-md px-3 py-2 text-base font-medium ${location.pathname === '/category' ? 'text-white underline' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>Category</Link>
+          <Link to="/about" className={`rounded-md px-3 py-2 text-sm font-medium ${location.pathname === '/about' ? 'text-white underline' : 'text-gray-300 hover:bg-gray-700 hover:text-white'}`}>About</Link>
         </div>
       </div>
     </nav>

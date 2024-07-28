@@ -20,6 +20,8 @@ import Profile from './pages/user/Profile';
 import Orders from './pages/user/Orders';
 import Product from './pages/Admin/Product';
 import Search from './pages/SearchResults';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
 
 function App() {
     return (
@@ -27,6 +29,8 @@ function App() {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/search' element={<Search />} />
+                <Route path='/cart' element={<Cart />} />
+                <Route path='/product/:slug' element={<ProductDetails />} />
                 {/* user */}
                 <Route path='/dashboard' element={<PrivateRoute />}>
                     <Route path="user" element={<Dashboard />} />
