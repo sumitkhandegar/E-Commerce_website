@@ -40,7 +40,7 @@ const Cart = () => {
 
   const createOrder = async () => {
     try {
-      const buyerId = auth?.user?.name; 
+      const buyerId = auth?.user?.email; 
       const orderDetails = {
         products: cart.map(product => product._id),
         buyer: buyerId, 

@@ -1,11 +1,12 @@
 import mongoose from "mongoose";
+import Products from "./productModel.js";
 
 const orderSchema = new mongoose.Schema(
   {
     products: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product',
+        ref: Products,
       },
     ],
     buyer: {

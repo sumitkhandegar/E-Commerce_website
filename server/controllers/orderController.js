@@ -4,21 +4,11 @@ import Product from '../models/productModel.js';
 // getOrdersController
 export const getAllOrdersController = async (req, res) => {
     try {
-        const orders = await orderModel.find()
-            .populate({
-                path: 'products',
-                model: 'Products' 
-            })
-            .populate({
-                path: 'buyer',
-                model: 'User' 
-            })
-            .exec();
-
+        const orders = await orderModel.find().populate('products').exec();
         res.status(200).json(orders);
-    } catch (error) {
+      } catch (error) {
         res.status(500).json({ message: error.message });
-    }
+      }
 };
 
 // Controller to create a new order

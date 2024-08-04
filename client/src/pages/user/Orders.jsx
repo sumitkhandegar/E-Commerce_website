@@ -3,6 +3,7 @@ import Layout from '../../components/Layout/Layout';
 import UserMenu from '../../components/Layout/UserMenu';
 import axios from 'axios';
 import { useAuth } from '../../context/auth';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, CircularProgress } from '@mui/material';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -10,25 +11,27 @@ const Orders = () => {
   const authURL = import.meta.env.VITE_API_URL;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const user_email = auth?.user?.email;
 
   const getOrders = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-          const { data } = await axios.get(`${authURL}/api/techhaven/order/orders`);
-          setOrders(data); // Update state with fetched orders
-          console.log('Fetched orders:', data);
-      } catch (error) {
-          setError(error.response ? error.response.data : error.message);
-          console.error('Error fetching orders:', error.response ? error.response.data : error.message);
-      } finally {
-          setLoading(false);
-      }
+    setLoading(true);
+    try {
+      const response = await axios.get(`${authURL}/api/techhaven/order/orders`);
+      setOrders(response.data);
+      console.log(response);
+    } catch (error) {
+      setError('Error fetching orders');
+      console.error('Error fetching orders:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     getOrders();
   }, []);
+
+  const filteredOrders = orders.filter(order => order.buyer === user_email);
 
   return (
     <Layout>
@@ -39,22 +42,42 @@ const Orders = () => {
           </div>
           <div className="mx-2 md:w-3/4">
             <div className="bg-white shadow-md rounded-lg p-4">
-              <h1>All Orders</h1>
-              {orders.length === 0 ? (
-                <p>No orders found.</p>
+              <Typography variant="h4" gutterBottom>
+                All Orders
+              </Typography>
+              {loading ? (
+                <CircularProgress />
+              ) : error ? (
+                <Typography color="error">{error}</Typography>
+              ) : filteredOrders.length === 0 ? (
+                <Typography>No orders found.</Typography>
               ) : (
-                orders.map(order => (
-                  <div key={order._id} className="mb-4 p-4 border rounded">
-                    <h2>Order ID: {order._id}</h2>
-                    <p>Status: {order.status}</p>
-                    <p>Buyer ID: {order.buyer}</p> {/* Displaying buyer as a string */}
-                    <ul>
-                      {order.products.map(product => (
-                        <li key={product._id}>{product.name}</li>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Order ID</TableCell>
+                        <TableCell>Status</TableCell>
+                        <TableCell>Products</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {filteredOrders.map(order => (
+                        <TableRow key={order._id}>
+                          <TableCell>{order._id}</TableCell>
+                          <TableCell>{order.status}</TableCell>
+                          <TableCell>
+                            <ul>
+                              {order.products.map(product => (
+                                <li key={product._id}>{product.name}</li>
+                              ))}
+                            </ul>
+                          </TableCell>
+                        </TableRow>
                       ))}
-                    </ul>
-                  </div>
-                ))
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               )}
             </div>
           </div>
