@@ -50,56 +50,38 @@ const Cart = () => {
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {cart.map((product) => (
-              <Card key={product._id} sx={{ display: 'flex', flexDirection: 'row' }}>
+              <Card key={product._id} sx={{ display: 'flex', flexDirection: 'column', marginBottom: 2 }}>
                 <CardMedia
                   component="img"
                   sx={{ width: 150, height: 150, objectFit: 'cover' }}
                   image={product?.imageUrl}
                   alt={product?.name}
                 />
-                <Box sx={{ display: 'flex', flexDirection: 'column', flex: '1' }}>
-                  <CardContent sx={{ flex: '1 0 auto' }}>
-                    <Typography component="div" variant="h5">
-                      {product?.name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary" component="div">
-                      {product?.category?.name}
-                    </Typography>
-                    <Typography variant="body1" component="div">
-                      Description: {product?.description}
-                    </Typography>
-                    <Typography variant="body1" component="div">
-                      Price: ₹{product?.price}
-                    </Typography>
-                    <Typography variant="body1" component="div">
-                      Quantity: {product?.quantity}
-                    </Typography>
-                    <Typography variant="body1" component="div">
-                      Shipping: {product?.shipping ? 'Available' : 'Not Available'}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" component="div">
-                      Created At: {new Date(product?.createdAt).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" component="div">
-                      Updated At: {new Date(product?.updatedAt).toLocaleDateString()}
-                    </Typography>
-                  </CardContent>
-                  <Box className="p-2 flex justify-between">
-                    <Button 
-                      variant="contained" 
-                      color="primary" 
-                      onClick={() => navigate(`/product/${product.slug}`)}
-                    >
-                      Detail
-                    </Button>
-                    <Button 
-                      variant="contained" 
-                      color="secondary" 
-                      onClick={() => removeProduct(product._id)}
-                    >
-                      Remove
-                    </Button>
-                  </Box>
+                <CardContent sx={{ flex: '1 0 auto' }}>
+                  <Typography variant="h5">{product?.name}</Typography>
+                  <Typography variant="subtitle1" color="text.secondary">{product?.category?.name}</Typography>
+                  <Typography variant="body1">Description: {product?.description}</Typography>
+                  <Typography variant="body1">Price: ₹{product?.price}</Typography>
+                  <Typography variant="body1">Quantity: {product?.quantity}</Typography>
+                  <Typography variant="body1">Shipping: {product?.shipping ? 'Available' : 'Not Available'}</Typography>
+                  <Typography variant="body2" color="text.secondary">Created At: {new Date(product?.createdAt).toLocaleDateString()}</Typography>
+                  <Typography variant="body2" color="text.secondary">Updated At: {new Date(product?.updatedAt).toLocaleDateString()}</Typography>
+                </CardContent>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: 2 }}>
+                  <Button 
+                    variant="contained" 
+                    color="primary" 
+                    onClick={() => navigate(`/product/${product.slug}`)}
+                  >
+                    Detail
+                  </Button>
+                  <Button 
+                    variant="contained" 
+                    color="secondary" 
+                    onClick={() => removeProduct(product._id)}
+                  >
+                    Remove
+                  </Button>
                 </Box>
               </Card>
             ))}
@@ -113,6 +95,24 @@ const Cart = () => {
             <Typography variant="h6">GST (18%): ₹{(cart.reduce((sum, product) => sum + product.price * product.quantity, 0) * GST_RATE).toFixed(2)}</Typography>
             <Typography variant="h6">Delivery Tax: ₹{DELIVERY_TAX.toFixed(2)}</Typography>
             <Typography variant="h5">Total: ₹{total.toFixed(2)}</Typography>
+            {auth?.user?.address ? (
+              <Box sx={{ marginTop: 2 }}>
+                <Typography variant="h6">Current Address</Typography>
+                <Typography>{auth?.user?.address}</Typography>
+                <Button variant="contained" color="primary" sx={{ marginTop: 1 }} onClick={() => navigate('/dashboard/user/profile')}>
+                  Update Address
+                </Button>
+              </Box>
+            ) : (
+              <Button 
+                variant="contained" 
+                color="primary" 
+                sx={{ marginTop: 2 }} 
+                onClick={() => navigate(auth?.token ? '/dashboard/user/profile' : '/login')}
+              >
+                {auth?.token ? 'Update Address' : 'Please Login'}
+              </Button>
+            )}
             <Button 
               variant="contained" 
               color="primary" 

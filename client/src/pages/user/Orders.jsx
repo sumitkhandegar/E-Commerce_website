@@ -1,8 +1,18 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Layout from '../../components/Layout/Layout';
 import UserMenu from '../../components/Layout/UserMenu';
+import axios from 'axios';
 
 const Orders = () => {
+  const [orders, setOrders] = useState();
+
+  const getOrders = async () => {
+    try {
+      const { data } = await axios.get()
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <Layout>
         <div className="m-2">
