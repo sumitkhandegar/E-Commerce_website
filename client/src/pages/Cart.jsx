@@ -4,24 +4,24 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/auth';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CardContent, CardMedia, Typography, Button, Divider } from '@mui/material';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import axios from 'axios';
 
 const Cart = () => {
   const [auth] = useAuth();
   const [cart, setCart] = useCart();
   const navigate = useNavigate();
   const [total, setTotal] = useState(0);
-
   const GST_RATE = 0.18;
   const DELIVERY_TAX = 50;
+  const authURL = import.meta.env.VITE_API_URL;
+  const authToken = localStorage.getItem('authToken'); 
 
-  // Fetch initial cart items from local storage
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem('cart')) || [];
     setCart(savedCart);
   }, [setCart]);
 
-  // Calculate total amount
   useEffect(() => {
     if (Array.isArray(cart)) {
       const subtotal = cart.reduce((sum, product) => sum + product.price * product.quantity, 0);
@@ -38,11 +38,40 @@ const Cart = () => {
     toast.success('Item removed from cart');
   };
 
+  const createOrder = async () => {
+    try {
+      const buyerId = auth?.user?.name; 
+      const orderDetails = {
+        products: cart.map(product => product._id),
+        buyer: buyerId, 
+      };
+      const response = await axios.post(`${authURL}/api/techhaven/order/orders`, orderDetails, {
+        headers: {
+          Authorization: authToken, 
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        toast.success('Order placed successfully');
+        setCart([]);
+        localStorage.removeItem('cart');
+        navigate('/dashboard/user/orders');
+      } else {
+        toast.error('Failed to place order');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      toast.error(`Error: ${error.message}`);
+    }
+  };
+
   return (
     <Layout>
+      <ToastContainer />
       <Box sx={{ padding: 2 }}>
         <Typography variant="h4" gutterBottom>
-          {`Hello ${auth?.token && auth?.name}, you have ${cart.length} product(s) in your cart`}
+          {`Hello ${auth?.user?.name}, you have ${cart.length} product(s) in your cart`}
         </Typography>
 
         {cart.length === 0 ? (
@@ -117,7 +146,7 @@ const Cart = () => {
               variant="contained" 
               color="primary" 
               sx={{ marginTop: 2 }} 
-              onClick={() => navigate('/payment')}
+              onClick={createOrder}
             >
               Order Now
             </Button>

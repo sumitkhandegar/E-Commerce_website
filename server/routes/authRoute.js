@@ -3,8 +3,7 @@ import { registerController,
     loginController, 
     forgotPasswordController, 
     testController, 
-    updateProfileController,
-    getOrdersController } from '../controllers/authController.js'
+    updateProfileController, } from '../controllers/authController.js'
 import { isAdmin, requireSignIn } from '../middlewares/authMiddleware.js';
 
 // roter object
@@ -34,8 +33,5 @@ router.get('/admin-auth', requireSignIn, isAdmin, (req, res) => {
 
 // protected admin route
 router.put('/profile', requireSignIn, updateProfileController);
-
-// orders
-router.get('/orders', requireSignIn, getOrdersController);
  
 export default router;

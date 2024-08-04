@@ -6,6 +6,7 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoute.js';
 import categoryRoutes from './routes/categoryRoute.js';
 import productRoutes from './routes/productRoute.js';
+import orderRoute from './routes/orderRoute.js';
 
 // Configure environment variables
 dotenv.config();
@@ -31,6 +32,7 @@ app.use(cors({
 app.use('/api/techhaven/auth', authRoutes);
 app.use('/api/techhaven/category', categoryRoutes);
 app.use('/api/techhaven/product', productRoutes);
+app.use('/api/techhaven/order', orderRoute);
 
 // Default route handler
 app.get('/', (req, res) => {
