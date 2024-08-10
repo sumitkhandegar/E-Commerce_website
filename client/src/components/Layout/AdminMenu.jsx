@@ -33,6 +33,12 @@ const AdminMenu = () => {
           </Link>
         </li>
         <li>
+          <Link to="/dashboard/admin/orders"
+            className={`block px-4 py-2 text-sm text-gray-700 ${location.pathname === '/dashboard/admin/orders' ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-100 hover:text-gray-900'}`}>
+            Orders
+          </Link>
+        </li>
+        <li>
           <Link to="/dashboard/admin/users"
             className={`block px-4 py-2 text-sm text-gray-700 ${location.pathname === '/dashboard/admin/add-users' ? 'bg-gray-100 text-gray-900' : 'hover:bg-gray-100 hover:text-gray-900'}`}>
             Users

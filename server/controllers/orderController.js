@@ -40,24 +40,36 @@ export const createOrderController = async (req, res) => {
     }
 };
 
+// Controller to get all order for admin
+export const getAllOrdersAdminController = async (req, res) => {
+  try {
+    const orders = await orderModel.find().populate('products').exec();
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 // Controller to update an order status
 export const updateOrderStatusController = async (req, res) => {
   const { orderId } = req.params;
   const { status } = req.body;
-
   try {
     const updatedOrder = await orderModel.findByIdAndUpdate(
       orderId,
       { status },
       { new: true }
     );
-
     if (!updatedOrder) {
       return res.status(404).json({ message: 'Order not found' });
     }
-
-    res.status(200).json(updatedOrder);
+    await updatedOrder.save();
+    return res.status(200).json(updatedOrder);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({
+      success: false,
+      message: "Error while updating order status",
+      error,
+    });
   }
 };
